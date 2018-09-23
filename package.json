@@ -1,0 +1,28 @@
+{
+  "name": "penguin-park",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --open --devtool inline-source-map",
+    "build": "NODE_ENV=production webpack",
+    "lint": "tslint --project tsconfig.json --config tslint.json"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "dependencies": {
+    "pixi.js": "^4.8.2"
+  },
+  "devDependencies": {
+    "@types/pixi.js": "^4.8.1",
+    "ts-loader": "^5.1.1",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.0",
+    "typescript": "^3.0.3",
+    "webpack": "^4.19.1",
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "^3.1.8"
+  }
+}
