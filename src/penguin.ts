@@ -1,14 +1,26 @@
-interface Textures {
+const nanoid = require('nanoid');
+
+export interface Textures {
   left: PIXI.Texture[];
   right: PIXI.Texture[];
   up: PIXI.Texture[];
   down: PIXI.Texture[];
 }
+type Direction = 'left' | 'up' | 'right' | 'down';
+export interface PenguinStatus {
+  id: string;
+  x: number;
+  y: number;
+  scale: number;
+  direction: Direction;
+}
 export default class Penguin {
   static stage: PIXI.Container;
   static textures: Textures;
+
+  public uuid: string;
   private sprite: PIXI.extras.AnimatedSprite;
-  private direction: 'left' | 'up' | 'right' | 'down';
+  private direction: Direction;
 
   static init(stage: PIXI.Container, textures: Textures) {
     Penguin.stage = stage;
@@ -18,6 +30,7 @@ export default class Penguin {
   constructor() {
     this.sprite = new PIXI.extras.AnimatedSprite(Penguin.textures.down);
     this.direction = 'down';
+    this.uuid = nanoid();
   }
 
   addToStage() {
@@ -32,6 +45,16 @@ export default class Penguin {
 
   removeFromStage() {
     Penguin.stage.removeChild(this.sprite);
+  }
+
+  update({ x, y, scale, direction }: PenguinStatus) {
+    if (this.direction !== direction) {
+      this.direction = direction;
+      this.sprite.textures = Penguin.textures[direction];
+      this.sprite.play();
+    }
+    this.sprite.position.set(x, y);
+    this.sprite.scale.set(scale, scale);
   }
 
   moveLeft() {
@@ -90,6 +113,26 @@ export default class Penguin {
           this.moveDown();
           break;
         default:
+      }
+    });
+  }
+
+  setWS(conn: WebSocket) {
+    document.addEventListener('keydown', e => {
+      switch (e.key) {
+        case 'ArrowLeft':
+        case 'ArrowUp':
+        case 'ArrowRight':
+        case 'ArrowDown':
+          conn.send(
+            JSON.stringify({
+              id: this.uuid,
+              x: this.sprite.position.x,
+              y: this.sprite.position.y,
+              scale: this.sprite.scale.x,
+              direction: this.direction,
+            })
+          );
       }
     });
   }

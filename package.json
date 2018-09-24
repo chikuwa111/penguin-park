@@ -13,9 +13,11 @@
     "trailingComma": "es5"
   },
   "dependencies": {
+    "nanoid": "^1.2.3",
     "pixi.js": "^4.8.2"
   },
   "devDependencies": {
+    "@types/nanoid": "^1.2.0",
     "@types/pixi.js": "^4.8.1",
     "ts-loader": "^5.1.1",
     "tslint": "^5.11.0",

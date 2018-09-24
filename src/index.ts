@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import Penguin from './penguin';
+import setupWS from './websocket';
 
 const app = new PIXI.Application({
   width: 640,
@@ -31,5 +32,8 @@ function setup() {
   penguin.addKeyboardControl();
   penguin.addToStage();
 
-  // TODO: websocket
+  const conn = setupWS(penguin.uuid);
+  if (conn) {
+    penguin.setWS(conn);
+  }
 }

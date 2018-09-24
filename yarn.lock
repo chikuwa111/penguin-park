@@ -19,6 +19,16 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
+"@types/nanoid@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/nanoid/-/nanoid-1.2.0.tgz#c0141cfec5b4818016355389b0bd539097d872ff"
+  dependencies:
+    "@types/node" "*"
+
+"@types/node@*":
+  version "10.10.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.10.3.tgz#09c75a4ad84d6a3d286790bdd9489a4f8ee9906c"
+
 "@types/pixi.js@^4.8.1":
   version "4.8.1"
   resolved "https://registry.yarnpkg.com/@types/pixi.js/-/pixi.js-4.8.1.tgz#f34f30aa70468a873bc418756c849d582ef9fced"
@@ -2027,6 +2037,10 @@ multicast-dns@^6.0.1:
 nan@^2.9.2:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.11.0.tgz#574e360e4d954ab16966ec102c0c049fd961a099"
+
+nanoid@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-1.2.3.tgz#b8f022193a5808f9e3112658a2c34e43b24c009a"
 
 nanomatch@^1.2.9:
   version "1.2.13"
