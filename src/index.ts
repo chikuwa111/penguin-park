@@ -30,10 +30,7 @@ function setup() {
   Penguin.init(app.stage, textures);
   const penguin = new Penguin();
   penguin.addKeyboardControl();
-  penguin.addToStage();
+  penguin.joinStage();
 
-  const conn = setupWS(penguin.uuid);
-  if (conn) {
-    penguin.setWS(conn);
-  }
+  setupWS(penguin);
 }

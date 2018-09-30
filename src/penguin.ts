@@ -1,24 +1,20 @@
-const nanoid = require('nanoid');
-
-export interface Textures {
+type Textures = {
   left: PIXI.Texture[];
   right: PIXI.Texture[];
   up: PIXI.Texture[];
   down: PIXI.Texture[];
-}
+};
 type Direction = 'left' | 'up' | 'right' | 'down';
-export interface PenguinStatus {
-  id: string;
+export type PenguinStatus = {
   x: number;
   y: number;
   scale: number;
   direction: Direction;
-}
+};
 export default class Penguin {
   static stage: PIXI.Container;
   static textures: Textures;
 
-  public uuid: string;
   private sprite: PIXI.extras.AnimatedSprite;
   private direction: Direction;
 
@@ -30,10 +26,21 @@ export default class Penguin {
   constructor() {
     this.sprite = new PIXI.extras.AnimatedSprite(Penguin.textures.down);
     this.direction = 'down';
-    this.uuid = nanoid();
   }
 
-  addToStage() {
+  get status(): PenguinStatus {
+    const { x, y } = this.sprite.position;
+    const scale = this.sprite.scale.x;
+    const direction = this.direction;
+    return {
+      x,
+      y,
+      scale,
+      direction,
+    };
+  }
+
+  joinStage() {
     this.sprite.animationSpeed = 0.1;
     this.sprite.play();
 
@@ -43,7 +50,7 @@ export default class Penguin {
     Penguin.stage.addChild(this.sprite);
   }
 
-  removeFromStage() {
+  leaveStage() {
     Penguin.stage.removeChild(this.sprite);
   }
 
@@ -58,43 +65,31 @@ export default class Penguin {
   }
 
   moveLeft() {
-    if (this.direction !== 'left') {
-      this.direction = 'left';
-      this.sprite.textures = Penguin.textures.left;
-      this.sprite.play();
-    }
-    this.sprite.position.x -= 16;
+    const direction = 'left';
+    const { x, y } = this.sprite.position;
+    const scale = this.sprite.scale.x;
+    this.update({ x: x - 16, y, scale, direction });
   }
 
   moveRight() {
-    if (this.direction !== 'right') {
-      this.direction = 'right';
-      this.sprite.textures = Penguin.textures.right;
-      this.sprite.play();
-    }
-    this.sprite.position.x += 16;
+    const direction = 'right';
+    const { x, y } = this.sprite.position;
+    const scale = this.sprite.scale.x;
+    this.update({ x: x + 16, y, scale, direction });
   }
 
   moveUp() {
-    if (this.direction !== 'up') {
-      this.direction = 'up';
-      this.sprite.textures = Penguin.textures.up;
-      this.sprite.play();
-    }
-    this.sprite.position.y -= 16;
-    this.sprite.scale.x /= 1.25;
-    this.sprite.scale.y /= 1.25;
+    const direction = 'up';
+    const { x, y } = this.sprite.position;
+    const scale = this.sprite.scale.x;
+    this.update({ x, y: y - 16, scale: scale / 1.25, direction });
   }
 
   moveDown() {
-    if (this.direction !== 'down') {
-      this.direction = 'down';
-      this.sprite.textures = Penguin.textures.down;
-      this.sprite.play();
-    }
-    this.sprite.position.y += 16;
-    this.sprite.scale.x *= 1.25;
-    this.sprite.scale.y *= 1.25;
+    const direction = 'down';
+    const { x, y } = this.sprite.position;
+    const scale = this.sprite.scale.x;
+    this.update({ x, y: y + 16, scale: scale * 1.25, direction });
   }
 
   addKeyboardControl() {
@@ -113,26 +108,6 @@ export default class Penguin {
           this.moveDown();
           break;
         default:
-      }
-    });
-  }
-
-  setWS(conn: WebSocket) {
-    document.addEventListener('keydown', e => {
-      switch (e.key) {
-        case 'ArrowLeft':
-        case 'ArrowUp':
-        case 'ArrowRight':
-        case 'ArrowDown':
-          conn.send(
-            JSON.stringify({
-              id: this.uuid,
-              x: this.sprite.position.x,
-              y: this.sprite.position.y,
-              scale: this.sprite.scale.x,
-              direction: this.direction,
-            })
-          );
       }
     });
   }

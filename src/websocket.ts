@@ -1,33 +1,76 @@
-import Penguin, { PenguinStatus, Textures } from './penguin';
+import Penguin, { PenguinStatus } from './penguin';
 
-const WEBSOCKET_SERVER_HOST = 'localhost:8000';
+const WEBSOCKET_SERVER_URL = 'ws://localhost:8000/ws';
 
-type Message = Array<PenguinStatus>;
+type Message =
+  | {
+      type: 'REGISTER';
+      id: string;
+    }
+  | {
+      type: 'UPDATE';
+      id: string;
+    } & PenguinStatus
+  | {
+      type: 'REMOVE';
+      id: string;
+    };
 
-export default function setup(ignoreId: string) {
+export default function setup(penguin: Penguin) {
   if (!window['WebSocket']) {
     // TODO: toastかなんかで伝える
-    return null;
+    return;
   }
+
+  let ownId = '';
   const penguins: { [id: string]: Penguin } = {};
-  const conn = new WebSocket('ws://' + WEBSOCKET_SERVER_HOST + '/ws');
+  const conn = new WebSocket(WEBSOCKET_SERVER_URL);
+
   conn.onclose = function(_e) {
     // TODO: toastかなんかで伝える
   };
   conn.onmessage = function(e) {
-    const message: Message = JSON.parse(e.data);
-    message.forEach(penguinStatus => {
-      if (penguinStatus.id === ignoreId) return;
-      if (penguins[penguinStatus.id]) {
-        penguins[penguinStatus.id].update(penguinStatus);
-      } else {
-        const penguin = new Penguin();
-        penguins[penguinStatus.id] = penguin;
-        penguin.addToStage();
-        penguin.update(penguinStatus);
+    const messages: Message[] = JSON.parse(e.data);
+    messages.forEach(message => {
+      switch (message.type) {
+        case 'REGISTER':
+          ownId = message.id;
+          break;
+        case 'UPDATE':
+          const { id, x, y, scale, direction } = message;
+          if (id === ownId || id === '') return;
+          if (penguins[id]) {
+            penguins[id].update({ x, y, scale, direction });
+          } else {
+            const penguin = new Penguin();
+            penguins[id] = penguin;
+            penguin.joinStage();
+            penguin.update({ x, y, scale, direction });
+          }
+          break;
+        case 'REMOVE':
+          const penguin = penguins[message.id];
+          if (penguin == null) return;
+          penguin.leaveStage();
+          penguins[id] = null;
+          break;
       }
     });
   };
 
-  return conn;
+  document.addEventListener('keydown', e => {
+    switch (e.key) {
+      case 'ArrowLeft':
+      case 'ArrowUp':
+      case 'ArrowRight':
+      case 'ArrowDown':
+        conn.send(
+          JSON.stringify({
+            ...penguin.status,
+            type: 'UPDATE',
+            id: ownId,
+          })
+        );
+    }
+  });
 }
