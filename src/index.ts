@@ -5,7 +5,7 @@ import setupWS from './websocket';
 const app = new PIXI.Application({
   width: 640,
   height: 360,
-  backgroundColor: 0x00ffd4,
+  backgroundColor: 0xc7f0ff,
 });
 
 // Fit screen size
