@@ -29,7 +29,7 @@ function setup() {
 
   Penguin.init(app.stage, textures);
   const penguin = new Penguin();
-  penguin.addKeyboardControl();
+  penguin.addUserControl();
   penguin.joinStage();
 
   setupWS(penguin);

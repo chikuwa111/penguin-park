@@ -11,10 +11,61 @@
       margin: 0;
       padding: 0;
     }
+
+    #container {
+      z-index: 100;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    #controller {
+      display: grid;
+      grid-template-rows: 50px 50px 50px;
+      grid-template-columns: 50px 50px 50px;
+      background-color: transparent;
+    }
+
+    .controller-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+    }
+
+    #controller-up {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    #controller-left {
+      grid-row: 2;
+      grid-column: 1;
+    }
+
+    #controller-right {
+      grid-row: 2;
+      grid-column: 3;
+    }
+
+    #controller-down {
+      grid-row: 3;
+      grid-column: 2;
+    }
   </style>
 </head>
 
 <body>
+  <div id="container">
+    <div id="controller">
+      <div id="controller-up" class="controller-arrow">↑</div>
+      <div id="controller-left" class="controller-arrow">←</div>
+      <div id="controller-right" class="controller-arrow">→</div>
+      <div id="controller-down" class="controller-arrow">↓</div>
+    </div>
+  </div>
   <script src="dist/bundle.js"></script>
 </body>
 

@@ -1,3 +1,7 @@
+const MOVE_STEP = 2;
+const SCALE_STEP = 1.01;
+const MAX_SCALE = 12;
+
 type Textures = {
   left: PIXI.Texture[];
   right: PIXI.Texture[];
@@ -45,7 +49,8 @@ export default class Penguin {
     this.sprite.play();
 
     this.sprite.anchor.set(0.5);
-    this.sprite.position.set(640 / 2, 360 / 2);
+    this.sprite.position.set(window.innerWidth / 2, window.innerHeight / 4);
+    this.sprite.scale.set(2, 2);
 
     Penguin.stage.addChild(this.sprite);
   }
@@ -60,6 +65,7 @@ export default class Penguin {
       this.sprite.textures = Penguin.textures[direction];
       this.sprite.play();
     }
+    if (scale > MAX_SCALE) return;
     this.sprite.position.set(x, y);
     this.sprite.scale.set(scale, scale);
   }
@@ -68,47 +74,107 @@ export default class Penguin {
     const direction = 'left';
     const { x, y } = this.sprite.position;
     const scale = this.sprite.scale.x;
-    this.update({ x: x - 16, y, scale, direction });
+    this.update({
+      x: x - Math.floor(MOVE_STEP * scale),
+      y,
+      scale,
+      direction,
+    });
   }
 
   moveRight() {
     const direction = 'right';
     const { x, y } = this.sprite.position;
     const scale = this.sprite.scale.x;
-    this.update({ x: x + 16, y, scale, direction });
+    this.update({
+      x: x + Math.floor(MOVE_STEP * scale),
+      y,
+      scale,
+      direction,
+    });
   }
 
   moveUp() {
     const direction = 'up';
     const { x, y } = this.sprite.position;
     const scale = this.sprite.scale.x;
-    this.update({ x, y: y - 16, scale: scale / 1.25, direction });
+    this.update({ x, y: y - MOVE_STEP, scale: scale / SCALE_STEP, direction });
   }
 
   moveDown() {
     const direction = 'down';
     const { x, y } = this.sprite.position;
     const scale = this.sprite.scale.x;
-    this.update({ x, y: y + 16, scale: scale * 1.25, direction });
+    this.update({ x, y: y + MOVE_STEP, scale: scale * SCALE_STEP, direction });
   }
 
-  addKeyboardControl() {
+  addUserControl() {
+    let direction: Direction = null;
+
     document.addEventListener('keydown', e => {
       switch (e.key) {
         case 'ArrowLeft':
-          this.moveLeft();
+          direction = 'left';
           break;
         case 'ArrowUp':
-          this.moveUp();
+          direction = 'up';
           break;
         case 'ArrowRight':
-          this.moveRight();
+          direction = 'right';
           break;
         case 'ArrowDown':
-          this.moveDown();
+          direction = 'down';
           break;
         default:
       }
     });
+    document.addEventListener('keyup', e => {
+      switch (e.key) {
+        case 'ArrowLeft':
+        case 'ArrowUp':
+        case 'ArrowRight':
+        case 'ArrowDown':
+          direction = null;
+          break;
+        default:
+      }
+    });
+
+    const directions: Array<Direction> = ['left', 'up', 'right', 'down'];
+    directions.forEach(d => {
+      const controller = document.getElementById(`controller-${d}`);
+      ['mousedown', 'touchstart'].forEach(e => {
+        controller.addEventListener(e, e => {
+          e.preventDefault();
+          direction = d;
+        });
+      });
+      ['mouseup', 'touchend'].forEach(e => {
+        controller.addEventListener(e, e => {
+          e.preventDefault();
+          direction = null;
+        });
+      });
+    });
+
+    const update = () => {
+      switch (direction) {
+        case 'left':
+          this.moveLeft();
+          break;
+        case 'up':
+          this.moveUp();
+          break;
+        case 'right':
+          this.moveRight();
+          break;
+        case 'down':
+          this.moveDown();
+          break;
+        default:
+      }
+      requestAnimationFrame(update);
+    };
+    update();
   }
 }
