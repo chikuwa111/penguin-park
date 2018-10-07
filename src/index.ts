@@ -16,6 +16,20 @@ app.renderer.resize(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(app.view);
 
+const text = new PIXI.Text('PENGUIN\nPARK', { align: 'center' });
+text.anchor.set(0.5);
+text.position.set(window.innerWidth / 2, window.innerHeight / 2);
+const updateText = () => {
+  if (text.alpha > 0) {
+    text.alpha -= 0.01;
+    requestAnimationFrame(updateText);
+  } else {
+    app.stage.removeChild(text);
+  }
+};
+app.stage.addChild(text);
+updateText();
+
 PIXI.loader.add('assets/penguin/penguin.json').load(setup);
 
 function setup() {
