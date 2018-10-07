@@ -10,7 +10,6 @@ module.exports = {
     filename:
       process.env.NODE_ENV !== 'production' ? 'bundle.js' : 'bundle-[hash].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/dist/',
   },
   devServer: {
     contentBase: '.',
