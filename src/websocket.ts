@@ -2,7 +2,7 @@ import throttle from 'lodash/throttle';
 import Penguin, { PenguinStatus } from './penguin';
 import toast from './toaster';
 
-const WEBSOCKET_SERVER_URL = 'ws://localhost:8000/ws';
+const WEBSOCKET_SERVER_URL = 'ws://104.196.224.21:3147/ws';
 
 type Message =
   | {
