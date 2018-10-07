@@ -21,6 +21,7 @@ export default class Penguin {
 
   private sprite: PIXI.extras.AnimatedSprite;
   private direction: Direction;
+  private onUpdate: (status: PenguinStatus) => void;
 
   static init(stage: PIXI.Container, textures: Textures) {
     Penguin.stage = stage;
@@ -30,6 +31,10 @@ export default class Penguin {
   constructor() {
     this.sprite = new PIXI.extras.AnimatedSprite(Penguin.textures.down);
     this.direction = 'down';
+  }
+
+  setOnUpdate(onUpdate: (status: PenguinStatus) => void) {
+    this.onUpdate = onUpdate;
   }
 
   get status(): PenguinStatus {
@@ -68,6 +73,7 @@ export default class Penguin {
     if (scale > MAX_SCALE) return;
     this.sprite.position.set(x, y);
     this.sprite.scale.set(scale, scale);
+    if (this.onUpdate) this.onUpdate({ x, y, scale, direction });
   }
 
   moveLeft() {

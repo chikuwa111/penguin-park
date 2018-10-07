@@ -1,3 +1,4 @@
+import throttle from 'lodash/throttle';
 import Penguin, { PenguinStatus } from './penguin';
 import toast from './toaster';
 
@@ -59,19 +60,17 @@ export default function setup(penguin: Penguin) {
     });
   };
 
-  document.addEventListener('keydown', e => {
-    switch (e.key) {
-      case 'ArrowLeft':
-      case 'ArrowUp':
-      case 'ArrowRight':
-      case 'ArrowDown':
-        conn.send(
-          JSON.stringify({
-            ...penguin.status,
-            type: 'UPDATE',
-            id: ownId,
-          })
-        );
+  const onUpdate = throttle((status: PenguinStatus) => {
+    if (conn && conn.readyState === 1) {
+      conn.send(
+        JSON.stringify({
+          ...status,
+          type: 'UPDATE',
+          id: ownId,
+        })
+      );
     }
-  });
+  }, 33); // about 30fps
+
+  penguin.setOnUpdate(onUpdate);
 }
