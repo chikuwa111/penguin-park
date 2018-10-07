@@ -1,4 +1,5 @@
 import Penguin, { PenguinStatus } from './penguin';
+import toast from './toaster';
 
 const WEBSOCKET_SERVER_URL = 'ws://localhost:8000/ws';
 
@@ -18,7 +19,7 @@ type Message =
 
 export default function setup(penguin: Penguin) {
   if (!window['WebSocket']) {
-    // TODO: toastかなんかで伝える
+    toast('このブラウザはWebSocket非対応です');
     return;
   }
 
@@ -27,7 +28,7 @@ export default function setup(penguin: Penguin) {
   const conn = new WebSocket(WEBSOCKET_SERVER_URL);
 
   conn.onclose = function(_e) {
-    // TODO: toastかなんかで伝える
+    toast('サーバーとの接続に失敗しました');
   };
   conn.onmessage = function(e) {
     const messages: Message[] = JSON.parse(e.data);

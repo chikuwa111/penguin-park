@@ -12,16 +12,16 @@
       padding: 0;
     }
 
-    #container {
-      z-index: 100;
-      position: absolute;
-      bottom: 0;
+    .container {
       width: 100%;
       display: flex;
       justify-content: center;
     }
 
     #controller {
+      z-index: 100;
+      position: absolute;
+      bottom: 0;
       display: grid;
       grid-template-rows: 50px 50px 50px;
       grid-template-columns: 50px 50px 50px;
@@ -54,17 +54,84 @@
       grid-row: 3;
       grid-column: 2;
     }
+
+    #toast {
+      visibility: hidden;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 2px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1000;
+      bottom: 30px;
+    }
+
+    #toast.show {
+      visibility: visible;
+      -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    @-webkit-keyframes fadein {
+      from {
+        bottom: 0;
+        opacity: 0;
+      }
+
+      to {
+        bottom: 30px;
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadein {
+      from {
+        bottom: 0;
+        opacity: 0;
+      }
+
+      to {
+        bottom: 30px;
+        opacity: 1;
+      }
+    }
+
+    @-webkit-keyframes fadeout {
+      from {
+        bottom: 30px;
+        opacity: 1;
+      }
+
+      to {
+        bottom: 0;
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeout {
+      from {
+        bottom: 30px;
+        opacity: 1;
+      }
+
+      to {
+        bottom: 0;
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <div id="container">
+  <div class="container">
     <div id="controller">
       <div id="controller-up" class="controller-arrow">↑</div>
       <div id="controller-left" class="controller-arrow">←</div>
       <div id="controller-right" class="controller-arrow">→</div>
       <div id="controller-down" class="controller-arrow">↓</div>
     </div>
+    <div id="toast"></div>
   </div>
   <script src="dist/bundle.js"></script>
 </body>
