@@ -46,5 +46,12 @@ function setup() {
   penguin.addUserControl();
   penguin.joinStage();
 
+  update()
+
   setupWS(penguin);
+}
+
+function update() {
+  app.renderer.render(app.stage)
+  requestAnimationFrame(update)
 }
