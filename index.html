@@ -1,165 +1,176 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-127075588-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
 
-<head>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127075588-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+      gtag('config', 'UA-127075588-1');
+    </script>
 
-    gtag('config', 'UA-127075588-1');
-  </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="You can move a penguin with friends!" />
+    <meta property="og:title" content="Penguin Park" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://penguin-park.chikuwa111.com/" />
+    <meta
+      property="og:image"
+      content="https://penguin-park.chikuwa111.com/assets/penguin1024.png"
+    />
+    <meta property="og:site_name" content="Penguin Park" />
+    <meta
+      property="og:description"
+      content="You can move a penguin with friends!"
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@chikuwa_0111" />
+    <meta
+      name="twitter:image"
+      content="https://penguin-park.chikuwa111.com/assets/penguin512.png"
+    />
+    <link rel="icon" type="image/x-icon" href="assets/penguin.ico" />
+    <title>Penguin Park</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="description" content="You can move a penguin with friends!">
-  <meta property="og:title" content="Penguin Park">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://penguin-park.chikuwa111.com/">
-  <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/penguins-park.appspot.com/o/penguin1024.png?alt=media&token=b4217659-f550-46fe-aaf5-01eb870cda2b">
-  <meta property="og:site_name" content="Penguin Park">
-  <meta property="og:description" content="You can move a penguin with friends!">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="@chikuwa_0111">
-  <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/penguins-park.appspot.com/o/penguin512.png?alt=media&token=6f69ec8f-cefa-42e9-afc9-d157110d0822">
-  <link rel="icon" type="image/x-icon" href="assets/penguin.ico">
-  <title>Penguin Park</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
+      .container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
 
-    .container {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
-
-    #controller {
-      z-index: 100;
-      position: absolute;
-      bottom: 0;
-      display: grid;
-      grid-template-rows: 50px 50px 50px;
-      grid-template-columns: 50px 50px 50px;
-      background-color: transparent;
-    }
-
-    .controller-arrow {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: white;
-      border-radius: 50%;
-    }
-
-    .controller-arrow:active {
-      background-color: gray;
-    }
-
-    #controller-up {
-      grid-row: 1;
-      grid-column: 2;
-    }
-
-    #controller-left {
-      grid-row: 2;
-      grid-column: 1;
-    }
-
-    #controller-right {
-      grid-row: 2;
-      grid-column: 3;
-    }
-
-    #controller-down {
-      grid-row: 3;
-      grid-column: 2;
-    }
-
-    #toast {
-      visibility: hidden;
-      background-color: #333;
-      color: #fff;
-      text-align: center;
-      border-radius: 2px;
-      padding: 16px;
-      position: fixed;
-      z-index: 1000;
-      bottom: 30px;
-    }
-
-    #toast.show {
-      visibility: visible;
-      -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-      animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    }
-
-    @-webkit-keyframes fadein {
-      from {
+      #controller {
+        z-index: 100;
+        position: absolute;
         bottom: 0;
-        opacity: 0;
+        display: grid;
+        grid-template-rows: 50px 50px 50px;
+        grid-template-columns: 50px 50px 50px;
+        background-color: transparent;
       }
 
-      to {
+      .controller-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border-radius: 50%;
+      }
+
+      .controller-arrow:active {
+        background-color: gray;
+      }
+
+      #controller-up {
+        grid-row: 1;
+        grid-column: 2;
+      }
+
+      #controller-left {
+        grid-row: 2;
+        grid-column: 1;
+      }
+
+      #controller-right {
+        grid-row: 2;
+        grid-column: 3;
+      }
+
+      #controller-down {
+        grid-row: 3;
+        grid-column: 2;
+      }
+
+      #toast {
+        visibility: hidden;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1000;
         bottom: 30px;
-        opacity: 1;
-      }
-    }
-
-    @keyframes fadein {
-      from {
-        bottom: 0;
-        opacity: 0;
       }
 
-      to {
-        bottom: 30px;
-        opacity: 1;
-      }
-    }
-
-    @-webkit-keyframes fadeout {
-      from {
-        bottom: 30px;
-        opacity: 1;
+      #toast.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
       }
 
-      to {
-        bottom: 0;
-        opacity: 0;
-      }
-    }
+      @-webkit-keyframes fadein {
+        from {
+          bottom: 0;
+          opacity: 0;
+        }
 
-    @keyframes fadeout {
-      from {
-        bottom: 30px;
-        opacity: 1;
+        to {
+          bottom: 30px;
+          opacity: 1;
+        }
       }
 
-      to {
-        bottom: 0;
-        opacity: 0;
-      }
-    }
-  </style>
-</head>
+      @keyframes fadein {
+        from {
+          bottom: 0;
+          opacity: 0;
+        }
 
-<body>
-  <div class="container">
-    <div id="controller">
-      <div id="controller-up" class="controller-arrow">↑</div>
-      <div id="controller-left" class="controller-arrow">←</div>
-      <div id="controller-right" class="controller-arrow">→</div>
-      <div id="controller-down" class="controller-arrow">↓</div>
+        to {
+          bottom: 30px;
+          opacity: 1;
+        }
+      }
+
+      @-webkit-keyframes fadeout {
+        from {
+          bottom: 30px;
+          opacity: 1;
+        }
+
+        to {
+          bottom: 0;
+          opacity: 0;
+        }
+      }
+
+      @keyframes fadeout {
+        from {
+          bottom: 30px;
+          opacity: 1;
+        }
+
+        to {
+          bottom: 0;
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="controller">
+        <div id="controller-up" class="controller-arrow">↑</div>
+        <div id="controller-left" class="controller-arrow">←</div>
+        <div id="controller-right" class="controller-arrow">→</div>
+        <div id="controller-down" class="controller-arrow">↓</div>
+      </div>
+      <div id="toast"></div>
     </div>
-    <div id="toast"></div>
-  </div>
-  <script type="text/javascript" src="dist/bundle.js"></script>
-</body>
-
+  </body>
 </html>
